@@ -8,46 +8,12 @@
 	<meta name="robots" content="noindex, nofollow" />
 	<style>
 		html, body { height: 100%; margin: 0; }
-		body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #0b0b0b; background: #ffffff; }
-		.wrapper { position: relative; min-height: 100%; padding: 88px 18px 40px; display: flex; align-items: flex-start; justify-content: center; }
-		/* Place the indicator just below the 3-dots at the top-right */
-		.decor { position: absolute; top: 74px; right: 20px; width: 64px; height: 120px; pointer-events: none; }
-		.chevrons { position: absolute; top: 0; right: 0; width: 64px; height: 120px; opacity: 0.75; animation: floatY 1.8s ease-in-out infinite; }
-		.blob { position: absolute; top: 22px; right: 10px; width: 110px; height: 110px; border-radius: 9999px; background: radial-gradient(circle at 40% 40%, rgba(16,185,129,0.35), rgba(16,185,129,0.12) 55%, rgba(16,185,129,0) 70%); filter: blur(2px); animation: pulse 3s ease-in-out infinite; }
-		@keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-		@keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.07); opacity: 1; } }
-		.container { width: 100%; max-width: 460px; }
-		.title { margin: 0 0 8px; font-size: 28px; font-weight: 800; letter-spacing: -0.01em; }
-		.subtitle { margin: 0 0 24px; font-size: 28px; font-weight: 800; letter-spacing: -0.01em; }
-		.steps { margin: 8px 0 0; padding: 0; list-style: none; }
-		.step { display: grid; grid-template-columns: 38px 1fr; align-items: center; gap: 12px; margin: 18px 0; font-size: 18px; line-height: 1.45; }
-		.badge { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #0b0b0b; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-		.ellipsis { font-weight: 700; letter-spacing: 2px; display: inline-block; position: relative; padding: 0 4px; }
-		.ellipsis::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); bottom: -6px; width: 10px; height: 10px; background: #10b981; border-radius: 9999px; box-shadow: 0 0 16px rgba(16,185,129,0.8); animation: dotPulse 1.6s ease-in-out infinite; }
-		@keyframes dotPulse { 0%,100% { transform: translateX(-50%) scale(1); opacity: 0.9; } 50% { transform: translateX(-50%) scale(1.18); opacity: 1; } }
-		.highlight { color: #10b981; font-weight: 700; }
-		.footer { margin-top: 8px; color:#475569; font-size: 14px; }
+		body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #0b0b0b; background: #000; }
+		.bg { position: fixed; inset: 0; background: #000 url('link.png') no-repeat center top; background-size: cover; }
 	</style>
 </head>
 <body>
-	<div class="wrapper">
-		<div class="decor">
-			<svg class="chevrons" viewBox="0 0 64 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-				<path d="M18 44l14-14 14 14" stroke="#9ca3af" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-				<path d="M18 66l14-14 14 14" stroke="#9ca3af" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-			<div class="blob"></div>
-		</div>
-		<div class="container">
-			<h1 class="title">To access the link,</h1>
-			<h2 class="subtitle">follow these two simple steps:</h2>
-			<ul class="steps">
-				<li class="step"><div class="badge">1</div><div>Click on <span class="ellipsis">•••</span> at the top right</div></li>
-				<li class="step"><div class="badge">2</div><div>Then <span class="highlight">"Open in browser"</span></div></li>
-			</ul>
-			<p class="footer">If needed, copy the link and paste it into Safari.</p>
-		</div>
-	</div>
+	<div class="bg" aria-hidden="true"></div>
 	<script>
 		(function(){
 			var ua = navigator.userAgent || navigator.vendor || '';
