@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Redirecting to Thrifty AI on the App Store…</title>
+    <meta name="description" content="Opening Thrifty AI on the App Store.">
+    <meta property="og:title" content="Thrifty AI – App Store" />
+    <meta property="og:description" content="Tap to open the Thrifty AI app on the App Store." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://apps.apple.com/us/app/thrifty-ai-profit-identifier/id6749215897" />
+    <meta name="robots" content="noindex, nofollow" />
+    <style>
+        html, body { height: 100%; margin: 0; }
+        body { display: grid; place-items: center; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #0f172a; background: #f8fafc; }
+        .card { background: white; padding: 24px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; max-width: 520px; }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <h1 style="margin:0 0 8px; font-size: 22px;">Opening App Store…</h1>
+        <p style="margin:0 0 16px; line-height:1.5;">If you aren't redirected automatically, tap the button below.</p>
+        <p style="margin:0 0 6px;">
+            <a id="cta" href="https://apps.apple.com/us/app/thrifty-ai-profit-identifier/id6749215897">Open Thrifty AI on the App Store</a>
+        </p>
+        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Works best on iPhone/iPad.</p>
+    </main>
+    <script>
+        (function () {
+            var appStoreUrl = 'https://apps.apple.com/us/app/thrifty-ai-profit-identifier/id6749215897';
+            var isiOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
+
+            function tryNavigate() {
+                try { window.location.replace(appStoreUrl); } catch (_) {}
+                // Fallback attempt for some in-app browsers
+                setTimeout(function () {
+                    try { window.location.href = appStoreUrl; } catch (_) {}
+                }, 600);
+            }
+
+            // Give social apps a moment to render link previews before redirecting
+            window.addEventListener('DOMContentLoaded', function () {
+                // If on iOS, navigate automatically; otherwise still navigate, but users on Android will just see the web page
+                setTimeout(tryNavigate, 300);
+            });
+        })();
+    </script>
+    <noscript>
+        Redirecting… If not redirected, use the link above.
+    </noscript>
+</body>
+</html>
+
+
