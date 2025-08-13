@@ -3,19 +3,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Redirecting to Thrifty…</title>
-    <meta name="description" content="Redirecting to Thrifty.">
-    <meta property="og:title" content="Thrifty" />
-    <meta property="og:description" content="Tap to open Thrifty." />
+    <title>Opening Thrifty…</title>
+    <meta name="description" content="Smart redirect to Thrifty with in-app browser handling.">
+    <meta property="og:title" content="Thrifty – Smart Redirect" />
+    <meta property="og:description" content="Opening Thrifty. If not, tap the button." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://thrifty-tau.vercel.app/" />
     <meta name="robots" content="noindex, nofollow" />
     <style>
         html, body { height: 100%; margin: 0; }
         body { display: grid; place-items: center; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #0f172a; background: #f8fafc; }
-        .card { background: white; padding: 24px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; max-width: 520px; }
+        .card { background: white; padding: 24px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: center; max-width: 560px; }
         a { color: #2563eb; text-decoration: none; }
         a:hover { text-decoration: underline; }
+        .cta { display: inline-block; margin-top: 8px; padding: 10px 14px; border-radius: 10px; background: #111827; color: white; text-decoration: none; }
+        .cta:hover { background: #0b1220; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
@@ -23,13 +26,27 @@
         <h1 style="margin:0 0 8px; font-size: 22px;">Opening Thrifty…</h1>
         <p style="margin:0 0 16px; line-height:1.5;">If you aren't redirected automatically, tap the button below.</p>
         <p style="margin:0 0 6px;">
-            <a id="cta" href="https://thrifty-tau.vercel.app/">Open Thrifty</a>
+            <a id="cta" class="cta hidden" href="#">Open in your browser</a>
         </p>
         <p style="margin:8px 0 0; font-size:13px; color:#475569;">Redirecting now…</p>
     </main>
     <script>
         (function () {
-            var targetUrl = 'https://thrifty-tau.vercel.app/';
+            var baseTargetUrl = 'https://thrifty-tau.vercel.app/';
+            var currentQuery = window.location.search || '';
+            var currentHash = window.location.hash || '';
+            var userAgentString = navigator.userAgent || navigator.vendor || '';
+
+            function buildTargetUrl() {
+                var hasQueryOnBase = baseTargetUrl.indexOf('?') !== -1;
+                var queryPart = currentQuery ? (hasQueryOnBase ? '&' + currentQuery.slice(1) : currentQuery) : '';
+                return baseTargetUrl + queryPart + currentHash;
+            }
+
+            var targetUrl = buildTargetUrl();
+            var isIOS = /iPhone|iPad|iPod/i.test(userAgentString);
+            var isAndroid = /Android/i.test(userAgentString);
+            var isInAppBrowser = /(FBAN|FBAV|Instagram|Line|Twitter|TikTok|Capcut|Messenger|Pinterest|Snapchat|VK|WeChat|Weibo|QQ|MiuiBrowser)/i.test(userAgentString);
 
             function tryNavigate() {
                 try { window.location.replace(targetUrl); } catch (_) {}
@@ -39,9 +56,32 @@
                 }, 600);
             }
 
+            function revealCta() {
+                var cta = document.getElementById('cta');
+                if (cta) {
+                    cta.classList.remove('hidden');
+                    cta.setAttribute('href', targetUrl);
+                }
+            }
+
             // Give social apps a moment to render link previews before redirecting
             window.addEventListener('DOMContentLoaded', function () {
-                setTimeout(tryNavigate, 300);
+                // Delay allows social apps to render OG preview before we navigate
+                setTimeout(function () {
+                    tryNavigate();
+                    if (isInAppBrowser) {
+                        revealCta();
+                    }
+                }, 900);
+
+                // Bind explicit user gesture fallback
+                var cta = document.getElementById('cta');
+                if (cta) {
+                    cta.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        tryNavigate();
+                    });
+                }
             });
         })();
     </script>
