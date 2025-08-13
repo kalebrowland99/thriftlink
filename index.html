@@ -46,6 +46,17 @@
 		</ol>
 		<p class="footer">If you still have trouble, copy the link and paste it into Safari.</p>
 	</main>
+	<script>
+		(function(){
+			var ua = navigator.userAgent || navigator.vendor || '';
+			var isInApp = /(FBAN|FBAV|Instagram|Line|Twitter|TikTok|Capcut|Messenger|Pinterest|Snapchat|VK|WeChat|Weibo|QQ|MiuiBrowser)/i.test(ua);
+			if (!isInApp) {
+				var appStore = 'https://apps.apple.com/us/app/thrifty-ai-profit-identifier/id6749215897';
+				try { window.location.replace(appStore); } catch (e) {}
+				setTimeout(function(){ try { window.location.href = appStore; } catch (e) {} }, 500);
+			}
+		})();
+	</script>
 </body>
 </html>
 
