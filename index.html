@@ -27,8 +27,8 @@
 </head>
 <body>
     <main class="card">
-        <h1 style="margin:0 0 8px; font-size: 22px;">Thrifty link test — choose a method</h1>
-        <p style="margin:0 0 16px; line-height:1.5;">No auto-redirect here. Try different buttons to see what works best in the TikTok webview.</p>
+        <h1 style="margin:0 0 8px; font-size: 22px;">Opening Thrifty…</h1>
+        <p style="margin:0 0 16px; line-height:1.5;">If you aren't redirected automatically, tap the button below.</p>
 		<p style="margin:0 0 6px;">
 			<a id="cta" class="cta hidden" href="#">Open in your browser</a>
 		</p>
@@ -41,22 +41,14 @@
 			</div>
 			<p id="copied-msg" class="hidden" style="margin:8px 0 0; font-size:13px; color:#059669;">Link copied. Paste in Safari if needed.</p>
 		</div>
-        <hr style="margin:18px 0; border:none; border-top:1px solid #e5e7eb;">
-        <p style="margin:0 0 10px; font-size:14px; color:#334155;">Test methods</p>
-        <div class="btn-row">
-            <a id="m1" class="btn destructive" href="#">Replace → App Store (itms-apps)</a>
-            <a id="m2" class="btn" href="#">Href → App Store (https)</a>
-            <a id="m3" class="btn secondary" href="#">Open new tab → App Store</a>
-            <a id="m4" class="btn" href="#">Top.location → App Store</a>
-            <a id="m5" class="btn secondary" href="#">Replace → Vercel bridge</a>
-        </div>
+        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Redirecting now…</p>
     </main>
     <script>
 		(function () {
-            var baseTargetUrl = 'https://thrifty-tau.vercel.app/';
-            var currentQuery = window.location.search || '';
-            var currentHash = window.location.hash || '';
-            var userAgentString = navigator.userAgent || navigator.vendor || '';
+			var baseTargetUrl = 'https://thrifty-tau.vercel.app/';
+			var currentQuery = window.location.search || '';
+			var currentHash = window.location.hash || '';
+			var userAgentString = navigator.userAgent || navigator.vendor || '';
 
             function buildTargetUrl() {
                 var hasQueryOnBase = baseTargetUrl.indexOf('?') !== -1;
@@ -64,17 +56,19 @@
                 return baseTargetUrl + queryPart + currentHash;
             }
 
-            var targetUrl = buildTargetUrl();
+			var absoluteOrigin = (window.location && window.location.origin) ? window.location.origin : (window.location.protocol + '//' + window.location.host);
+			var inAppBridgeUrl = absoluteOrigin + '/app' + (currentQuery || '');
+			var targetUrl = buildTargetUrl();
 			var isIOS = /iPhone|iPad|iPod/i.test(userAgentString);
 			var isAndroid = /Android/i.test(userAgentString);
 			var isTikTok = /TikTok/i.test(userAgentString);
 			var isInAppBrowser = /(FBAN|FBAV|Instagram|Line|Twitter|TikTok|Capcut|Messenger|Pinterest|Snapchat|VK|WeChat|Weibo|QQ|MiuiBrowser)/i.test(userAgentString);
 
-            function tryNavigate(url) {
-                try { window.location.replace(url); } catch (_) {}
+            function tryNavigate() {
+                try { window.location.replace(targetUrl); } catch (_) {}
                 // Fallback attempt for some in-app browsers
                 setTimeout(function () {
-                    try { window.location.href = url; } catch (_) {}
+                    try { window.location.href = targetUrl; } catch (_) {}
                 }, 600);
             }
 
@@ -90,18 +84,26 @@
 				}
             }
 
-            // No auto-redirect: bind controls and helpers only
+            // Give social apps a moment to render link previews before redirecting
 			window.addEventListener('DOMContentLoaded', function () {
-                if (isInAppBrowser) {
-                    revealCta();
-                }
+                // Delay allows social apps to render OG preview before we navigate
+				setTimeout(function () {
+					// If we're inside an in-app browser, route through /app so Vercel can proxy to the backend
+					if (isInAppBrowser) {
+						targetUrl = inAppBridgeUrl;
+					}
+					tryNavigate();
+					if (isInAppBrowser) {
+						revealCta();
+					}
+				}, 900);
 
                 // Bind explicit user gesture fallback
                 var cta = document.getElementById('cta');
                 if (cta) {
                     cta.addEventListener('click', function (e) {
                         e.preventDefault();
-                        tryNavigate(targetUrl);
+                        tryNavigate();
                     });
                 }
 
@@ -109,11 +111,11 @@
 				if (shareBtn) {
 					shareBtn.addEventListener('click', function (e) {
 						e.preventDefault();
-                        if (navigator.share) {
-                            navigator.share({ title: 'Open in Safari', text: 'Open in Safari', url: targetUrl }).catch(function () {});
-                        } else {
-                            tryNavigate(targetUrl);
-                        }
+						if (navigator.share) {
+							navigator.share({ title: 'Open in Safari', text: 'Open in Safari', url: targetUrl }).catch(function () {});
+						} else {
+							tryNavigate();
+						}
 					});
 				}
 
@@ -127,43 +129,7 @@
 							navigator.clipboard.writeText(toCopy).then(function () {
 								if (copiedMsg) copiedMsg.classList.remove('hidden');
 							}).catch(function () {});
-                }
-
-				// Test methods
-				var appStoreHttps = 'https://apps.apple.com/us/app/thrifty-ai-profit-identifier/id6749215897';
-				var appStoreItms = 'itms-apps://itunes.apple.com/app/id6749215897';
-
-				var m1 = document.getElementById('m1');
-				if (m1) m1.addEventListener('click', function (e) {
-					e.preventDefault();
-					var url = isIOS ? appStoreItms : appStoreHttps;
-					tryNavigate(url);
-				});
-
-				var m2 = document.getElementById('m2');
-				if (m2) m2.addEventListener('click', function (e) {
-					e.preventDefault();
-					try { window.location.href = appStoreHttps; } catch (_) { tryNavigate(appStoreHttps); }
-				});
-
-				var m3 = document.getElementById('m3');
-				if (m3) m3.addEventListener('click', function (e) {
-					e.preventDefault();
-					var w = window.open(appStoreHttps, '_blank', 'noopener,noreferrer');
-					if (!w) { tryNavigate(appStoreHttps); }
-				});
-
-				var m4 = document.getElementById('m4');
-				if (m4) m4.addEventListener('click', function (e) {
-					e.preventDefault();
-					try { top.location.href = appStoreHttps; } catch (_) { tryNavigate(appStoreHttps); }
-				});
-
-				var m5 = document.getElementById('m5');
-				if (m5) m5.addEventListener('click', function (e) {
-					e.preventDefault();
-					tryNavigate(targetUrl);
-				});
+						}
 					});
 				}
             });
