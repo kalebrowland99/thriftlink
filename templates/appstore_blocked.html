@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Open in Browser</title>
+	<style>
+		html, body { height: 100%; margin: 0; }
+		body { display: grid; place-items: center; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #0f172a; background: #f8fafc; }
+		.card { background: white; padding: 24px 20px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); text-align: left; max-width: 640px; }
+		h1 { margin: 0 0 10px; font-size: 22px; }
+		ol { margin: 8px 0 0; padding-left: 20px; }
+		li { margin: 8px 0; }
+		.hint { color: #334155; font-size: 14px; margin-top: 10px; }
+		.actions { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+		.btn { display: inline-block; padding: 10px 14px; border-radius: 10px; background: #111827; color: #fff; text-decoration: none; }
+		.btn.secondary { background: #0ea5e9; }
+	</style>
+</head>
+<body>
+	<main class="card">
+		<h1>To access the link, follow these two simple steps:</h1>
+		<ol>
+			<li>Tap the ••• at the top-right.</li>
+			<li>Choose "Open in Browser" (Safari).</li>
+		</ol>
+		<p class="hint">If that doesn't work, try the quick actions below:</p>
+		<div class="actions">
+			<a class="btn" href="{{ target_url }}">Try again</a>
+			<a class="btn secondary" href="itms-apps://itunes.apple.com/app/id6749215897">Open App Store</a>
+		</div>
+	</main>
+</body>
+</html>
+
+
