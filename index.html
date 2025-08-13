@@ -3,14 +3,15 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Ouvrir dans le navigateur</title>
-	<meta name="description" content="Instructions pour ouvrir le lien dans votre navigateur depuis TikTok.">
+	<title>Open in browser</title>
+	<meta name="description" content="Instructions to open the link in your browser from TikTok.">
 	<meta name="robots" content="noindex, nofollow" />
 	<style>
 		html, body { height: 100%; margin: 0; }
 		body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #0b0b0b; background: #ffffff; }
 		.wrapper { position: relative; min-height: 100%; padding: 88px 18px 40px; display: flex; align-items: flex-start; justify-content: center; }
-		.decor { position: absolute; top: 110px; right: 34px; width: 64px; height: 120px; pointer-events: none; }
+		/* Place the indicator just below the 3-dots at the top-right */
+		.decor { position: absolute; top: 74px; right: 20px; width: 64px; height: 120px; pointer-events: none; }
 		.chevrons { position: absolute; top: 0; right: 0; width: 64px; height: 120px; opacity: 0.75; animation: floatY 1.8s ease-in-out infinite; }
 		.blob { position: absolute; top: 22px; right: 10px; width: 110px; height: 110px; border-radius: 9999px; background: radial-gradient(circle at 40% 40%, rgba(16,185,129,0.35), rgba(16,185,129,0.12) 55%, rgba(16,185,129,0) 70%); filter: blur(2px); animation: pulse 3s ease-in-out infinite; }
 		@keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
@@ -38,13 +39,13 @@
 			<div class="blob"></div>
 		</div>
 		<div class="container">
-			<h1 class="title">Pour accéder au lien,</h1>
-			<h2 class="subtitle">suis ces deux étapes simples:</h2>
+			<h1 class="title">To access the link,</h1>
+			<h2 class="subtitle">follow these two simple steps:</h2>
 			<ul class="steps">
-				<li class="step"><div class="badge">1</div><div>Cliquez sur <span class="ellipsis">•••</span> en haut à droite</div></li>
-				<li class="step"><div class="badge">2</div><div>Puis <span class="highlight">"Ouvrir dans le navigateur"</span></div></li>
+				<li class="step"><div class="badge">1</div><div>Click on <span class="ellipsis">•••</span> at the top right</div></li>
+				<li class="step"><div class="badge">2</div><div>Then <span class="highlight">"Open in browser"</span></div></li>
 			</ul>
-			<p class="footer">Si besoin, copiez le lien et collez-le dans Safari.</p>
+			<p class="footer">If needed, copy the link and paste it into Safari.</p>
 		</div>
 	</div>
 	<script>
