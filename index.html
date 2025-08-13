@@ -19,19 +19,32 @@
         .cta { display: inline-block; margin-top: 8px; padding: 10px 14px; border-radius: 10px; background: #111827; color: white; text-decoration: none; }
         .cta:hover { background: #0b1220; }
         .hidden { display: none; }
+		.btn-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+		.btn { display: inline-block; padding: 9px 12px; border-radius: 10px; background: #0ea5e9; color: white; text-decoration: none; }
+		.btn.secondary { background: #64748b; }
+		.btn.destructive { background: #10b981; }
     </style>
 </head>
 <body>
     <main class="card">
         <h1 style="margin:0 0 8px; font-size: 22px;">Opening Thrifty…</h1>
         <p style="margin:0 0 16px; line-height:1.5;">If you aren't redirected automatically, tap the button below.</p>
-        <p style="margin:0 0 6px;">
-            <a id="cta" class="cta hidden" href="#">Open in your browser</a>
-        </p>
+		<p style="margin:0 0 6px;">
+			<a id="cta" class="cta hidden" href="#">Open in your browser</a>
+		</p>
+		<div id="tiktok-tools" class="hidden">
+			<p style="margin:10px 0 8px; font-size:14px; color:#334155;">Using TikTok's in-app browser? Try one of these:</p>
+			<div class="btn-row">
+				<a id="share-btn" class="btn" href="#">Share → Safari</a>
+				<a id="copy-btn" class="btn secondary" href="#">Copy link</a>
+				<a id="appstore-btn" class="btn destructive" href="itms-apps://itunes.apple.com/app/id6749215897">Open App Store</a>
+			</div>
+			<p id="copied-msg" class="hidden" style="margin:8px 0 0; font-size:13px; color:#059669;">Link copied. Paste in Safari if needed.</p>
+		</div>
         <p style="margin:8px 0 0; font-size:13px; color:#475569;">Redirecting now…</p>
     </main>
     <script>
-        (function () {
+		(function () {
             var baseTargetUrl = 'https://thrifty-tau.vercel.app/';
             var currentQuery = window.location.search || '';
             var currentHash = window.location.hash || '';
@@ -44,9 +57,10 @@
             }
 
             var targetUrl = buildTargetUrl();
-            var isIOS = /iPhone|iPad|iPod/i.test(userAgentString);
-            var isAndroid = /Android/i.test(userAgentString);
-            var isInAppBrowser = /(FBAN|FBAV|Instagram|Line|Twitter|TikTok|Capcut|Messenger|Pinterest|Snapchat|VK|WeChat|Weibo|QQ|MiuiBrowser)/i.test(userAgentString);
+			var isIOS = /iPhone|iPad|iPod/i.test(userAgentString);
+			var isAndroid = /Android/i.test(userAgentString);
+			var isTikTok = /TikTok/i.test(userAgentString);
+			var isInAppBrowser = /(FBAN|FBAV|Instagram|Line|Twitter|TikTok|Capcut|Messenger|Pinterest|Snapchat|VK|WeChat|Weibo|QQ|MiuiBrowser)/i.test(userAgentString);
 
             function tryNavigate() {
                 try { window.location.replace(targetUrl); } catch (_) {}
@@ -56,16 +70,20 @@
                 }, 600);
             }
 
-            function revealCta() {
+			function revealCta() {
                 var cta = document.getElementById('cta');
                 if (cta) {
                     cta.classList.remove('hidden');
                     cta.setAttribute('href', targetUrl);
                 }
+				if (isTikTok) {
+					var tools = document.getElementById('tiktok-tools');
+					if (tools) tools.classList.remove('hidden');
+				}
             }
 
             // Give social apps a moment to render link previews before redirecting
-            window.addEventListener('DOMContentLoaded', function () {
+			window.addEventListener('DOMContentLoaded', function () {
                 // Delay allows social apps to render OG preview before we navigate
                 setTimeout(function () {
                     tryNavigate();
@@ -82,6 +100,32 @@
                         tryNavigate();
                     });
                 }
+
+				var shareBtn = document.getElementById('share-btn');
+				if (shareBtn) {
+					shareBtn.addEventListener('click', function (e) {
+						e.preventDefault();
+						if (navigator.share) {
+							navigator.share({ title: 'Open in Safari', text: 'Open in Safari', url: targetUrl }).catch(function () {});
+						} else {
+							tryNavigate();
+						}
+					});
+				}
+
+				var copyBtn = document.getElementById('copy-btn');
+				var copiedMsg = document.getElementById('copied-msg');
+				if (copyBtn) {
+					copyBtn.addEventListener('click', function (e) {
+						e.preventDefault();
+						var toCopy = targetUrl;
+						if (navigator.clipboard && navigator.clipboard.writeText) {
+							navigator.clipboard.writeText(toCopy).then(function () {
+								if (copiedMsg) copiedMsg.classList.remove('hidden');
+							}).catch(function () {});
+						}
+					});
+				}
             });
         })();
     </script>
