@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Redirecting to Thrifty AI on the App Store…</title>
-    <meta name="description" content="Opening Thrifty AI on the App Store.">
-    <meta property="og:title" content="Thrifty AI – App Store" />
-    <meta property="og:description" content="Tap to open the Thrifty AI app on the App Store." />
+    <title>Redirecting to Thrifty…</title>
+    <meta name="description" content="Redirecting to Thrifty.">
+    <meta property="og:title" content="Thrifty" />
+    <meta property="og:description" content="Tap to open Thrifty." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://apps.apple.com/us/app/thrifty-ai-profit-identifier/id6749215897" />
+    <meta property="og:url" content="https://thrifty-tau.vercel.app/" />
     <meta name="robots" content="noindex, nofollow" />
     <style>
         html, body { height: 100%; margin: 0; }
@@ -20,29 +20,27 @@
 </head>
 <body>
     <main class="card">
-        <h1 style="margin:0 0 8px; font-size: 22px;">Opening App Store…</h1>
+        <h1 style="margin:0 0 8px; font-size: 22px;">Opening Thrifty…</h1>
         <p style="margin:0 0 16px; line-height:1.5;">If you aren't redirected automatically, tap the button below.</p>
         <p style="margin:0 0 6px;">
-            <a id="cta" href="https://apps.apple.com/us/app/thrifty-ai-profit-identifier/id6749215897">Open Thrifty AI on the App Store</a>
+            <a id="cta" href="https://thrifty-tau.vercel.app/">Open Thrifty</a>
         </p>
-        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Works best on iPhone/iPad.</p>
+        <p style="margin:8px 0 0; font-size:13px; color:#475569;">Redirecting now…</p>
     </main>
     <script>
         (function () {
-            var appStoreUrl = 'https://apps.apple.com/us/app/thrifty-ai-profit-identifier/id6749215897';
-            var isiOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
+            var targetUrl = 'https://thrifty-tau.vercel.app/';
 
             function tryNavigate() {
-                try { window.location.replace(appStoreUrl); } catch (_) {}
+                try { window.location.replace(targetUrl); } catch (_) {}
                 // Fallback attempt for some in-app browsers
                 setTimeout(function () {
-                    try { window.location.href = appStoreUrl; } catch (_) {}
+                    try { window.location.href = targetUrl; } catch (_) {}
                 }, 600);
             }
 
             // Give social apps a moment to render link previews before redirecting
             window.addEventListener('DOMContentLoaded', function () {
-                // If on iOS, navigate automatically; otherwise still navigate, but users on Android will just see the web page
                 setTimeout(tryNavigate, 300);
             });
         })();
