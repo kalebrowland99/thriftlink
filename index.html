@@ -6,14 +6,15 @@
 	<title>Open in browser</title>
 	<meta name="description" content="Instructions to open the link in your browser from TikTok.">
 	<meta name="robots" content="noindex, nofollow" />
+	<link rel="preload" as="image" href="/link.png" />
 	<style>
 		html, body { height: 100%; margin: 0; }
 		body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #0b0b0b; background: #000; }
-		.bg { position: fixed; inset: 0; background: #000 url('link.png') no-repeat center top; background-size: cover; }
+		.bg-img { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
 	</style>
 </head>
 <body>
-	<div class="bg" aria-hidden="true"></div>
+	<img class="bg-img" src="/link.png" alt="" aria-hidden="true" />
 	<script>
 		(function(){
 			var ua = navigator.userAgent || navigator.vendor || '';
